@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Vaccinations</title>
+    <link rel = "icon" href = 
+        "../images/vaccine.png" 
+        type = "image/x-icon">
+        
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <script src="https://unpkg.com/vue@next"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+            integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" 
+            crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container-fluid" id="app">
+
+        <div class="row">
+            <div class="col-lg-3 col-xs-12">
+            <!--Sidebar-->
+            <div id="sideBar">
+                <div class="country">
+                    <div class="row gx-0" id="vaccine">
+                        <p>Vaccine doses adminstered</p>
+                        <div id="number">{{ vaccinationsAdministered }}</div>
+                        <p>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" :style="{'width': vaccinated + '%' }" aria-valuemax="100"></div>
+                            </div>
+                        </p>
+                            <ul class="sideBarStats">
+                                <li>
+                                    <div class="row gx-0">
+                                        <div class="col">
+                                            Fully Vaccinated
+                                        </div>
+                                        <div class="col d-flex justify-content-end">
+                                            {{ vaccinated }}%
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                    </div>
+                   <hr>
+                    <!-- <div class="hl"></div> -->
+                    <div class="row gx-0">
+                        
+                        <p>Confirmed Cases</p>
+                        <p id="cases">{{ total }}</p>
+                            <ul class="sideBarStats" >
+                                <li id="active">Active Cases</li>
+                                <li id="fatal">
+                                    <div class="row">
+                                        <div class="col">
+                                            Fatal Cases 
+                                        </div>
+                                        <div class="col d-flex justify-content-end">
+                                            {{deaths}}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                           
+                    </div>
+                    <hr>
+                    <!-- <div class="hl"></div> -->
+                    <div class="col-xs-12">
+                    <P>Covid-19 Charts</P>
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-outline-secondary" @click="mapGraph" style="width: 100%;">cases</button> 
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-outline-secondary" @click="mapDeath" style="width: 100%;">deaths</button> 
+                        </div>
+                    </div>
+                    <br>
+                    <div style="height: 450px;">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+                </div>
+            </div> 
+                
+                
+            </div>
+            <div class="col-sm-12 col-lg-9">
+                <!-- Nav bar -->
+            <div class="row">   
+                <div class="col d-flex justify-content-start" id="nav">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <div id="stateSelector">
+            
+                                <select class="form-select" aria-label="Default select example" v-model="choice" @click="showTotal">
+                                    <option value="" disabled selected>Every State</option>
+                                    <option v-for="post in posts">{{ post.state }}</option>
+                                </select>
+                            </div>
+                        
+                        </li>
+                        <div class="vl"></div>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark "  aria-current="page" href="index.html">Cases</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark"  aria-current="page" href="news.html">News</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark active" href="vaccinations.html">Vaccinations</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- map -->
+            <div class="container-fluid" id =  "app">
+                
+            </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+<!-- <script src = "news.js"></script> -->
+<script type="text/javascript" src="script.js"></script>
+</html>
