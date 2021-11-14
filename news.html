@@ -6,7 +6,7 @@
     <title>Latest News</title>
 
     <link rel = "icon" href = 
-        "../images/world-news.png" 
+        "images/world-news.png" 
         type = "image/x-icon">
         
         <link rel="stylesheet" type="text/css" href="style.css"/>
@@ -18,16 +18,33 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+
     <div class="container-fluid">
 
+        <div class="row" style="background-color:#323e52;">
+        
+            <div>
+                <a href="index.html">
+                    <img src="images/coronavirus.png" class="image" alt="" style="width: 40px; height: 40px; margin: 10px; margin-left: 5px; float:left;">
+                    <div class="heading" style="color:white; font-weight: bold; float:left; margin-top: 18px; margin-left: 7px;">Covid-19 Tracker</div>
+                </a>
+
+                
+            </div>
+            
+            
+        
+    </div>
+
+
         <div class="row">
-            <div class="col-lg-3 col-xs-12">
+            <div class="col-lg-3 col-xs-12 order-1 order-xs-last">
             <!--Sidebar-->
             <div id="sideBar">
                 <div class="country" id="app">
                     <div class="row gx-0" id="vaccine">
                         <p>Vaccine doses adminstered</p>
-                        <div id="number">{{ vaccinationsAdministered }}</div>
+                        <div id="number">{{ new Intl.NumberFormat().format(vaccinationsAdministered) }}</div>
                         <p>
                             <div class="progress">
                                 <div class="progress-bar bg-success" role="progressbar" :style="{'width': vaccinated + '%' }" aria-valuemax="100"></div>
@@ -51,16 +68,25 @@
                     <div class="row gx-0">
                         
                         <p>Confirmed Cases</p>
-                        <p id="cases">{{ total }}</p>
+                        <p id="cases">{{ new Intl.NumberFormat().format(total) }}</p>
                             <ul class="sideBarStats" >
-                                <li id="active">Active Cases</li>
+                                <li id="active">
+                                    <div class="row">
+                                        <div class="col">
+                                            New Cases 
+                                        </div>
+                                        <div class="col d-flex justify-content-end">
+                                            {{new Intl.NumberFormat().format(newCases)}}
+                                        </div>
+                                    </div>
+                                </li>
                                 <li id="fatal">
                                     <div class="row">
                                         <div class="col">
                                             Fatal Cases 
                                         </div>
                                         <div class="col d-flex justify-content-end">
-                                            {{deaths}}
+                                            {{new Intl.NumberFormat().format(deaths)}}
                                         </div>
                                     </div>
                                 </li>
@@ -80,7 +106,7 @@
                         </div>
                     </div>
                     <br>
-                    <div style="height: 450px;">
+                    <div id="chartReport" style="height:250px;">
                         <canvas id="myChart"></canvas>
                     </div>
                 </div>
@@ -89,30 +115,21 @@
                 
                 
             </div>
-            <div class="col-sm-12 col-lg-9">
+            <div class="col-xs-12 col-lg-9 order-xs-first order-xs-first order-lg-last">
                 <!-- Nav bar -->
                 <div class="row" id="app">   
-                    <div class="col d-flex justify-content-start" id="nav">
+                    <div class="col d-flex justify-content-start" id="nav" style="background-color:#778899">
                         <ul class="nav nav-pills">
-                            <li class="nav-item">
-                                <div id="stateSelector">
-                
-                                    <select class="form-select" aria-label="Default select example" v-model="choice" @click="showTotal">
-                                        <option value="" disabled selected>Every State</option>
-                                        <option v-for="post in posts">{{ post.state }}</option>
-                                    </select>
-                                </div>
                             
-                            </li>
-                            <div class="vl"></div>
+                            
                             <li class="nav-item">
-                            <a class="nav-link text-dark "  aria-current="page" href="index.html">Cases</a>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link text-dark active"  aria-current="page" href="news.html">News</a>
+                            <a class="nav-link text-light "  aria-current="page" href="index.html">Cases</a>
                             </li>
                             <li class="nav-item">
-                            <a class="nav-link text-dark" href="vaccinations.html">Vaccinations</a>
+                            <a class="nav-link text-light active"  aria-current="page" href="news.html">News</a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link text-light" href="vaccinations.html">Vaccinations</a>
                             </li>
                         </ul>
                     </div>
@@ -125,7 +142,7 @@
                         
                     <div class="row">
                         
-                                <div class="cards-wrapper">
+                                <div class="cards-wrapper" style="overflow-x: scroll;">
                                     
                                     <news-portion v-for = "eachNews in news" :title = "eachNews.title" :description = "eachNews.description" :urltoimage = "eachNews.urlToImage" :url = "eachNews.url">
                         

@@ -1,4 +1,5 @@
 
+
 #country {
     font-size: 20px;
     font-family: 'Segoe UI';
@@ -8,13 +9,12 @@
 
 body {
     background-color:  #FFFAFA;
-    width: 100vw;
     height: 100vh;
     
 }
 #map{
-    background-color: rgb(168, 168, 168);
     height: 100%;
+    background-color: lightgray
 }
 
 #sideBar{
@@ -47,8 +47,9 @@ ul.sideBarStats{
     font-weight: bold;
     line-height: 24px;
 }
+
 svg path {
-    fill: lightgrey;
+    fill: rgb(21, 35, 66);
     stroke: #eee;
     stroke-width: 2;
     text-align: center;
@@ -56,7 +57,9 @@ svg path {
     margin: auto;
 }
 
+
 svg path:hover  {
+    
     fill:#A70D2A;
     transition: 0.6s;
     cursor: pointer;
@@ -132,9 +135,18 @@ svg path:hover  {
 
 
 }
-#chart {
-    text-align: center;
-    height: 240px;
+.box{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 600;
+    background-color: lightgray;
+}
+.box p{
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 40px;
+    
 }
 .nav-item{
     margin: auto;
@@ -210,5 +222,4 @@ h5:active {
       height: 11em;
     }
   }
-
 

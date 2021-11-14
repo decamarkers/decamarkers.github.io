@@ -18,7 +18,7 @@ const app = Vue.createApp({
         var counter = 0;
         var newsCounter = 0;
         var newsArray = [];
-        while(counter <3){
+        while(counter <6){
             if(data.articles[newsCounter].title == null || data.articles[newsCounter].description == null || data.articles[newsCounter].url == null || data.articles[newsCounter].urlToImage == null){
                 newsCounter++;
             }
@@ -45,8 +45,8 @@ app.component('news-portion',{
     template:`
     <div class="col-4">
     <a :href = "url" target = "_blank" style="color:black; text-decoration: none;">
-        <div class="card" style="width: auto; margin: 15px">
-            <img class = "img-responsive center-block d-block w-100 h-100" :src = "urltoimage">
+        <div class="card" style="width: auto; margin: 15px; height: 500px;">
+            <img class = "img-responsive center-block d-block " :src = "urltoimage">
             <div class="card-body">
                 <h5 class="card-title">{{title}}</h5>
                 <p class="card-text">{{description}}</p>
