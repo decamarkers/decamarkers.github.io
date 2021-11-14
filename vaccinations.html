@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Vaccinations</title>
+    <link rel = "icon" href = 
+        "images/vaccine.png" 
+        type = "image/x-icon">
+        
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <script src="https://unpkg.com/vue@next"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+            integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" 
+            crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container-fluid" id="app">
+        <div class="row" style="background-color:#323e52;">
+        
+            <div>
+                <a href="index.html">
+                    <img src="images/coronavirus.png" class="image" alt="" style="width: 40px; height: 40px; margin: 10px; margin-left: 5px; float:left;">
+                    <div class="heading" style="color:white; font-weight: bold; float:left; margin-top: 18px; margin-left: 7px;">Covid-19 Tracker</div>
+                </a>
+
+                
+            </div>
+            
+            
+        
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-xs-12 order-1 order-xs-last" >
+
+        <!--Sidebar-->
+        <div id="sideBar">
+            <div class="country">
+                <div class="row gx-0" id="vaccine">
+                    <p>Vaccine doses administered</p>
+                    <div id="number">{{ new Intl.NumberFormat().format(vaccinationsAdministered) }}</div>
+                    <p>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" :style="{'width': vaccinated + '%' }" aria-valuemax="100"></div>
+                        </div>
+                    </p>
+                        <ul class="sideBarStats">
+                            <li>
+                                <div class="row gx-0">
+                                    <div class="col">
+                                        Fully Vaccinated
+                                    </div>
+                                    <div class="col d-flex justify-content-end">
+                                        {{ vaccinated }}%
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                </div>
+               <hr>
+               
+                <div class="row gx-0">
+                    
+                    <p>Confirmed Cases</p>
+                    <p id="cases">{{ new Intl.NumberFormat().format(total) }}</p>
+                        <ul class="sideBarStats" >
+                            <li id="active">
+                                <div class="row">
+                                    <div class="col">
+                                        New Cases 
+                                    </div>
+                                    <div class="col d-flex justify-content-end">
+                                        {{ new Intl.NumberFormat().format(newCases)}}
+                                    </div>
+                                </div>
+                            </li>
+                            
+                            <li id="fatal">
+                                <div class="row">
+                                    <div class="col">
+                                        Fatal Cases 
+                                    </div>
+                                    <div class="col d-flex justify-content-end">
+                                        {{new Intl.NumberFormat().format(deaths)}}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                       
+                </div>
+                <hr>
+             
+                <div class="col-xs-12">
+                <P>Covid-19 Charts</P>
+                <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-outline-secondary"  @click="mapVaccination" style="width: 100%;" >Vaccinations Completed</button> 
+                    </div>
+                    
+                </div>
+                <br>
+                <div id="chartReport">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+            </div>
+        </div> 
+            
+            
+        </div>
+
+        <!-- order-sm-first: if smaller than sm, order first/left
+             order-lg-last: if smaller than lg, order last/right-->
+        <div class="col-xs-12 col-lg-9 order--first order-xs-first order-lg-last" style="background-color: lightgray;">
+            <!-- Nav bar -->
+            <div class="row">   
+                <div class="col d-flex justify-content-start" id="nav" style="background-color:#778899">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <div id="stateSelector" >
+            
+                                <select class="form-select text-light" style="background-color:#778899" aria-label="Default select example" v-model="choice" @change="showTotal(); mapVaccination();">
+                                    <option value="" disabled selected>Select State</option>
+                                    <option v-for="post in posts">{{ post.state }}</option>
+                                </select>
+                            </div>
+                        
+                        </li>
+                        <div class="vl"></div>
+                        <li class="nav-item">
+                        <a class="nav-link text-light"  aria-current="page" href="index.html">Cases</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-light "  aria-current="page" href="news.html">News</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-light active " href="vaccinations.html">Vaccinations</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col">
+               
+            <div class="vaccinationData" style="text-align: center;">
+                <div class="row">
+                    <h4 style="margin-top: 20px; font-weight: bolder;">Vaccination Progress Per State</h4>
+                </div>
+                <div class="row gx-0" style="padding-left: 20px; padding-right: 20px;">
+                    <div class="col">
+                        <div class="box" style="border-top: solid 4px #8AB82E; background-color: #F5F5F5; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
+                            Fully Vaccinated
+                            <p style="color: #8AB82E; padding: 5px;">{{ vaccinated }}%</p>
+                        </div>
+                        <div class="vl"></div>
+                    </div>
+                    
+                    <div class="col">
+                        <div class="box" style="border-top: solid 4px green; background-color: #F5F5F5;">
+                            Received &ge;  1 dose
+                            <p style="color: green; padding: 5px;">{{vaccinationsInitiated}}%</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box" style="border-top: solid 4px rgb(0, 140, 255); background-color: #F5F5F5; ">
+                            Doses Administered
+                            <p style="color: rgb(0, 140, 255); padding: 5px;">{{ new Intl.NumberFormat().format(vaccinationsAdministered) }}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box" style="border-top: solid 4px rgb(0, 0, 163); background-color: #F5F5F5; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
+                            Doses Distributed
+                            <p style="color: rgb(0, 0, 163); padding: 5px;">{{ new Intl.NumberFormat().format(vaccinationsDistributed) }}</p>
+                        </div>
+                    </div>
+                    <h4 style="font-weight: bolder;">Approved Vaccines</h4>
+                    <table class="table" style="background-color: #F5F5F5; border-radius: 5px;">
+                        <tr>
+                            <th>Developed by</th><th>Efficacy</th><th>Doses</th>
+                        </tr>
+                        <tr>
+                            <td>Moderna (mRNA-1273)</td><td>More than 90%</td><td>2 doses, 4 weeks apart, <a href="https://www.who.int/news-room/feature-stories/detail/the-moderna-covid-19-mrna-1273-vaccine-what-you-need-to-know" target="_blank">Learn more</a></td>
+                        </tr>
+                        <tr>
+                            <td>Pfizer-BioNTech (BNT162b2)</td><td>91.30%
+                            </td><td>2 doses, 3 weeks apart, <a href="https://www.cvdvaccine.com/" target="_blank">Learn more</a></td>
+                        </tr>
+                        <tr>
+                            <td>Sinovac (CoronaVac)</td><td>50.65%</td><td>2 doses, 2 weeks apart, <a href="https://www.who.int/news-room/feature-stories/detail/the-sinovac-covid-19-vaccine-what-you-need-to-know" target="_blank">Learn more</a></td>
+                        </tr>
+                    </table>
+                    <h4 style="font-weight: bolder;">Vaccine Types</h4>
+                    <table class="table" style="background-color: #F5F5F5; border-radius: 5px;">
+                        <tr>
+                            <th>Vaccine Type</th><th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><a href="https://vaccine-safety-training.org/inactivated-whole-cell-vaccines.html">Inactivated whole-cell</a></td><td>It involves the direct introduction into appropriate tissues of a plasmid containing the DNA sequence encoding the antigen(s) against which an immune response is sought</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.who.int/teams/health-product-policy-and-standards/standards-and-specifications/vaccines-quality/dna">DNA based</a></td><td>
+                                Made from microorganisms (viruses, bacteria, other) that have been killed through physical or chemical processes</td>
+                        </tr>
+                        <tr>
+                            <td><a href="http://globalhealthprimer.emory.edu/targets-technologies/live-attenuated-vaccines.html">Live attenuated virus</a>
+                                </td><td>Derived from disease-causing pathogens (virus or bacteria) that have been weakened under laboratory conditions</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.news-medical.net/health/What-is-a-Non-Replicating-Vaccine.aspx">Non-Replicating viral vector</a>
+                                </td><td>Viral vectors provide a convenient means to deliver vaccine antigens to select target cells or tissues. A broad spectrum of replicating and non-replicating vectors is available</td>
+                        </tr>
+                        <tr>
+                            <td><a href="http://globalhealthprimer.emory.edu/targets-technologies/polysaccharide-protein-conjugate-vaccines.html">Polysaccharide vaccines</a>
+                                </td><td>
+                                    Some bacteria when infecting humans are often protected by a polysaccharide (sugar) capsule that helps the organism evade the human defense systems especially in infants and young children</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.gavi.org/vaccineswork/what-are-protein-subunit-vaccines-and-how-could-they-be-used-against-covid-19">Protein subunit</a>
+                                </td><td>Present an antigen to the immune system without viral particles, using a specific, isolated protein of the pathogen</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/different-vaccines/mrna.html">RNA-based
+                                </a>
+                                </td><td>An RNA is injected in the body. This RNA encodes the information to produce the antigen, which is a protein from a pathogen, that will stimulate the immune system</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://vaccine-safety-training.org/subunit-vaccines.html">Subunit vaccines
+                                </a>
+                                </td><td>They differ from inactivated whole-cell vaccines, by containing only the antigenic parts of the pathogen</td>
+                        </tr>
+                        
+                    </table>
+                    
+                </div>
+
+            </div>
+            </div>
+            
+            
+        </div>
+        
+    </div>
+</div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+<!-- <script src = "news.js"></script> -->
+<script type="text/javascript" src="script.js"></script>
+</html>
